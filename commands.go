@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/aws/ec2metadata"
 	"strings"
 )
 
@@ -33,15 +32,15 @@ const (
   KEY_PROFILE = "profile"
 )
 
-func showAmiId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showAmiId() {
+	if writeHeader {
 		printHeader(KEY_AMI_ID)
 	}
 	fmt.Println(doc.ImageID)
 }
 
-func showAmiLaunchIndex(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showAmiLaunchIndex() {
+	if writeHeader {
 		printHeader(KEY_AMI_LAUNCH_INDEX)
 	}
 	val, err := svc.GetMetadata(KEY_AMI_LAUNCH_INDEX)
@@ -51,8 +50,8 @@ func showAmiLaunchIndex(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showAmiManifestPath(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showAmiManifestPath() {
+	if writeHeader {
 		printHeader(KEY_AMI_MANIFEST_PATH)
 	}
 	val, err := svc.GetMetadata(KEY_AMI_MANIFEST_PATH)
@@ -62,8 +61,8 @@ func showAmiManifestPath(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showAncestorAmiIds(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showAncestorAmiIds() {
+	if writeHeader {
 		printHeader(KEY_ANCESTOR_AMI_IDS)
 	}
 	val, err := svc.GetMetadata(KEY_ANCESTOR_AMI_IDS)
@@ -73,8 +72,8 @@ func showAncestorAmiIds(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showBlockDeviceMapping(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showBlockDeviceMapping() {
+	if writeHeader {
 		printHeader(KEY_BLOCK_DEVICE_MAPPING)
 	}
 	mappings, err := svc.GetMetadata(KEY_BLOCK_DEVICE_MAPPING)
@@ -93,22 +92,22 @@ func showBlockDeviceMapping(svc *ec2metadata.EC2Metadata, header bool) {
 	}
 }
 
-func showInstanceId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showInstanceId() {
+	if writeHeader {
 		printHeader(KEY_INSTANCE_ID)
 	}
 	fmt.Println(doc.InstanceID)
 }
 
-func showInstanceType(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showInstanceType() {
+	if writeHeader {
 		printHeader(KEY_INSTANCE_TYPE)
 	}
 	fmt.Println(doc.InstanceType)
 }
 
-func showLocalHostname(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showLocalHostname() {
+	if writeHeader {
 		printHeader(KEY_LOCAL_HOSTNAME)
 	}
 	val, err := svc.GetMetadata(KEY_LOCAL_HOSTNAME)
@@ -118,15 +117,15 @@ func showLocalHostname(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showLocalIpv4(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showLocalIpv4() {
+	if writeHeader {
 		printHeader(KEY_LOCAL_IPV4)
 	}
 	fmt.Println(doc.PrivateIP)
 }
 
-func showKernelId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showKernelId() {
+	if writeHeader {
 		printHeader(KEY_KERNEL_ID)
 	}
 	val := doc.KernelID
@@ -136,15 +135,15 @@ func showKernelId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
 	fmt.Println(val)
 }
 
-func showAvailabilityZone(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showAvailabilityZone() {
+	if writeHeader {
 		printHeader(KEY_AVAILABILITY_ZONE)
 	}
 	fmt.Println(doc.AvailabilityZone)
 }
 
-func showProductCodes(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showProductCodes() {
+	if writeHeader {
 		printHeader(KEY_PRODUCT_CODES)
 	}
 	val, err := svc.GetMetadata(KEY_PRODUCT_CODES)
@@ -154,8 +153,8 @@ func showProductCodes(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showPublicHostname(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showPublicHostname() {
+	if writeHeader {
 		printHeader(KEY_PUBLIC_HOSTNAME)
 	}
 	val, err := svc.GetMetadata(KEY_PUBLIC_HOSTNAME)
@@ -165,8 +164,8 @@ func showPublicHostname(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showPublicIpv4(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showPublicIpv4() {
+	if writeHeader {
 		printHeader(KEY_PUBLIC_IPV4)
 	}
 	val, err := svc.GetMetadata(KEY_PUBLIC_IPV4)
@@ -176,8 +175,8 @@ func showPublicIpv4(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showPublicKeys(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showPublicKeys() {
+	if writeHeader {
 		printHeader(KEY_PUBLIC_KEYS)
 	}
 	mapping, err := svc.GetMetadata(KEY_PUBLIC_KEYS)
@@ -199,8 +198,8 @@ func showPublicKeys(svc *ec2metadata.EC2Metadata, header bool) {
   fmt.Println(val)
 }
 
-func showRamdiskId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
-	if header {
+func showRamdiskId() {
+	if writeHeader {
 		printHeader(KEY_RAMDISK_ID)
 	}
 	val := doc.RamdiskID
@@ -211,8 +210,8 @@ func showRamdiskId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
 	fmt.Println(val)
 }
 
-func showReservationId(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showReservationId() {
+	if writeHeader {
 		printHeader(KEY_RESERVATION_ID)
 	}
 	val, err := svc.GetMetadata(KEY_RESERVATION_ID)
@@ -222,8 +221,8 @@ func showReservationId(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showSecurityGroups(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showSecurityGroups() {
+	if writeHeader {
 		printHeader(KEY_SECURITY_GROUPS)
 	}
 	val, err := svc.GetMetadata(KEY_SECURITY_GROUPS)
@@ -233,8 +232,8 @@ func showSecurityGroups(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showUserData(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showUserData() {
+	if writeHeader {
 		printHeader(KEY_USER_DATA)
 	}
 	val, err := svc.GetUserData()
@@ -244,8 +243,8 @@ func showUserData(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showMac(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showMac() {
+	if writeHeader {
 		printHeader(KEY_MAC)
 	}
   val, err := svc.GetMetadata(KEY_MAC)
@@ -255,8 +254,8 @@ func showMac(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showProfile(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showProfile() {
+	if writeHeader {
 		printHeader(KEY_PROFILE)
 	}
   val, err := svc.GetMetadata(KEY_PROFILE)
@@ -266,8 +265,8 @@ func showProfile(svc *ec2metadata.EC2Metadata, header bool) {
 	fmt.Println(val)
 }
 
-func showInstanceAction(svc *ec2metadata.EC2Metadata, header bool) {
-	if header {
+func showInstanceAction() {
+	if writeHeader {
 		printHeader(KEY_INSTANCE_ACTION)
 	}
   val, err := svc.GetMetadata(KEY_INSTANCE_ACTION)
