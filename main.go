@@ -104,12 +104,15 @@ func main() {
 	}
 
   if *flagProfile {
+    showProfile(metadata, false)
   }
 
   if *flagMac {
+    showMac(metadata, false)
   }
 
   if *flagInstanceAction {
+    showInstanceAction(metadata, false)
   }
 
 	if *flagAll {
@@ -117,14 +120,17 @@ func main() {
 		showAmiLaunchIndex(metadata, true)
 		showAmiManifestPath(metadata, true)
 		showAncestorAmiIds(metadata, true)
+		showAvailabilityZone(doc, true)
 		showBlockDeviceMapping(metadata, true)
+    showInstanceAction(metadata, true)
 		showInstanceId(doc, true)
 		showInstanceType(doc, true)
 		showLocalHostname(metadata, true)
 		showLocalIpv4(doc, true)
 		showKernelId(doc, true)
-		showAvailabilityZone(doc, true)
+    showMac(metadata, true)
 		showProductCodes(metadata, true)
+    showProfile(metadata, true)
 		showPublicHostname(metadata, true)
 		showPublicIpv4(metadata, true)
 		showPublicKeys(metadata, true)

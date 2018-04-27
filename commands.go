@@ -28,6 +28,9 @@ const (
   KEY_RESERVATION_ID = "reservation-id"
   KEY_SECURITY_GROUPS = "security-groups"
   KEY_USER_DATA = "user-data"
+  KEY_MAC = "mac"
+  KEY_INSTANCE_ACTION = "instance-action"
+  KEY_PROFILE = "profile"
 )
 
 func showAmiId(doc ec2metadata.EC2InstanceIdentityDocument, header bool) {
@@ -235,6 +238,39 @@ func showUserData(svc *ec2metadata.EC2Metadata, header bool) {
 		printHeader(KEY_USER_DATA)
 	}
 	val, err := svc.GetUserData()
+	if err != nil {
+		val = VAL_NOT_AVAILABLE
+	}
+	fmt.Println(val)
+}
+
+func showMac(svc *ec2metadata.EC2Metadata, header bool) {
+	if header {
+		printHeader(KEY_MAC)
+	}
+  val, err := svc.GetMetadata(KEY_MAC)
+	if err != nil {
+		val = VAL_NOT_AVAILABLE
+	}
+	fmt.Println(val)
+}
+
+func showProfile(svc *ec2metadata.EC2Metadata, header bool) {
+	if header {
+		printHeader(KEY_PROFILE)
+	}
+  val, err := svc.GetMetadata(KEY_PROFILE)
+	if err != nil {
+		val = VAL_NOT_AVAILABLE
+	}
+	fmt.Println(val)
+}
+
+func showInstanceAction(svc *ec2metadata.EC2Metadata, header bool) {
+	if header {
+		printHeader(KEY_INSTANCE_ACTION)
+	}
+  val, err := svc.GetMetadata(KEY_INSTANCE_ACTION)
 	if err != nil {
 		val = VAL_NOT_AVAILABLE
 	}
