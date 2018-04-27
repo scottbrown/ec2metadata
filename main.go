@@ -36,30 +36,139 @@ func main() {
 	kingpin.Version(VERSION)
 	kingpin.Parse()
 
+  fmt.Println("Loading config")
   cfg, err := external.LoadDefaultAWSConfig()
   if err != nil {
-    fmt.Println("Could not retrieve default AWS config.")
-    return    // TODO exit 1
+    kingpin.Errorf("Could not retrieve default AWS config.")
   }
 
+  fmt.Println("Starting service")
   metadata := ec2metadata.New(cfg)
 
+  fmt.Println("Checking for metadata service")
   if !metadata.Available() {
-    fmt.Println("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.")
-    return    // TODO exit 1
+    kingpin.Errorf("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.")
   }
 
   doc, err := metadata.GetInstanceIdentityDocument()
   if err != nil {
-    fmt.Println("not available")
-    return    // TODO exit 1
+    kingpin.Errorf("not available")
   }
 
   if *showAmiId {
     fmt.Println(doc.ImageID)
   }
 
+  if *showAmiLaunchIndex {
+    val, err := metadata.GetMetadata("ami-launch-index")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showAmiManifestPath {
+    val, err := metadata.GetMetadata("ami-manifest-path")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showAncestorAmiIds {
+    val, err := metadata.GetMetadata("ancestor-ami-ids")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showBlockDeviceMapping {
+    mappings, err := metadata.GetMetadata("block-device-mapping")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+
+    fmt.Println(mappings)
+  }
+
+  if *showInstanceId {
+    fmt.Println(doc.InstanceID)
+  }
+
+  if *showInstanceType {
+    fmt.Println(doc.InstanceType)
+  }
+
+  if *showLocalHostname {
+    val, err := metadata.GetMetadata("local-hostname")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showLocalIpv4 {
+    fmt.Println(doc.PrivateIP)
+  }
+
+  if *showKernelId {
+    fmt.Println(doc.KernelID)
+  }
+
+  if *showAvailabilityZone {
+    fmt.Println(doc.AvailabilityZone)
+  }
+
+  if *showProductCodes {
+    val, err := metadata.GetMetadata("product-codes")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showPublicHostname {
+    val, err := metadata.GetMetadata("public-hostname")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showPublicIpv4 {
+    val, err := metadata.GetMetadata("public-ipv4")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showPublicKeys {
+    // TODO
+  }
+
   if *showRamdiskId {
     fmt.Println(doc.RamdiskID)
+  }
+
+  if *showReservationId {
+    val, err := metadata.GetMetadata("reservation-id")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showSecurityGroups {
+    val, err := metadata.GetMetadata("security-groups")
+    if err != nil {
+      kingpin.Errorf("not available")
+    }
+    fmt.Println(val)
+  }
+
+  if *showUserData {
+    fmt.Println(metadata.GetUserData())
   }
 }
