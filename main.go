@@ -1,7 +1,9 @@
 package main
 
 import (
-	_ "github.com/aws/aws-sdk-go-v2/aws/ec2metadata"
+  "fmt"
+	"github.com/aws/aws-sdk-go-v2/aws/ec2metadata"
+	"github.com/aws/aws-sdk-go-v2/aws/external"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -33,4 +35,31 @@ var (
 func main() {
 	kingpin.Version(VERSION)
 	kingpin.Parse()
+
+  cfg, err := external.LoadDefaultAWSConfig()
+  if err != nil {
+    fmt.Println("Could not retrieve default AWS config.")
+    return    // TODO exit 1
+  }
+
+  metadata := ec2metadata.New(cfg)
+
+  if !metadata.Available() {
+    fmt.Println("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.")
+    return    // TODO exit 1
+  }
+
+  doc, err := metadata.GetInstanceIdentityDocument()
+  if err != nil {
+    fmt.Println("not available")
+    return    // TODO exit 1
+  }
+
+  if *showAmiId {
+    fmt.Println(doc.ImageID)
+  }
+
+  if *showRamdiskId {
+    fmt.Println(doc.RamdiskID)
+  }
 }
