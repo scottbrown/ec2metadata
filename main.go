@@ -6,6 +6,13 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+var (
+  writeHeader bool = false
+  svc *ec2metadata.EC2Metadata
+  doc ec2metadata.EC2InstanceIdentityDocument
+)
+
+
 func main() {
 	kingpin.Version(VERSION)
 	kingpin.Parse()
@@ -15,128 +22,129 @@ func main() {
 		kingpin.Errorf("Could not retrieve default AWS config.")
 	}
 
-	metadata := ec2metadata.New(cfg)
+	svc = ec2metadata.New(cfg)
 
 	// TODO add a timeout
-	if !metadata.Available() {
+	if !svc.Available() {
 		kingpin.Errorf("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.")
 	}
 
-	doc, err := metadata.GetInstanceIdentityDocument()
+	doc, err = svc.GetInstanceIdentityDocument()
 	if err != nil {
 		kingpin.Errorf("not available")
 	}
 
 	if *flagAmiId {
-		showAmiId(doc, false)
+		showAmiId()
 	}
 
 	if *flagAmiLaunchIndex {
-		showAmiLaunchIndex(metadata, false)
+		showAmiLaunchIndex()
 	}
 
 	if *flagAmiManifestPath {
-		showAmiManifestPath(metadata, false)
+		showAmiManifestPath()
 	}
 
 	if *flagAncestorAmiIds {
-		showAncestorAmiIds(metadata, false)
+		showAncestorAmiIds()
 	}
 
 	if *flagBlockDeviceMapping {
-		showBlockDeviceMapping(metadata, false)
+		showBlockDeviceMapping()
 	}
 
 	if *flagInstanceId {
-		showInstanceId(doc, false)
+		showInstanceId()
 	}
 
 	if *flagInstanceType {
-		showInstanceType(doc, false)
+		showInstanceType()
 	}
 
 	if *flagLocalHostname {
-		showLocalHostname(metadata, false)
+		showLocalHostname()
 	}
 
 	if *flagLocalIpv4 {
-		showLocalIpv4(doc, false)
+		showLocalIpv4()
 	}
 
 	if *flagKernelId {
-		showKernelId(doc, false)
+		showKernelId()
 	}
 
 	if *flagAvailabilityZone {
-		showAvailabilityZone(doc, false)
+		showAvailabilityZone()
 	}
 
 	if *flagProductCodes {
-		showProductCodes(metadata, false)
+		showProductCodes()
 	}
 
 	if *flagPublicHostname {
-		showPublicHostname(metadata, false)
+		showPublicHostname()
 	}
 
 	if *flagPublicIpv4 {
-		showPublicIpv4(metadata, false)
+		showPublicIpv4()
 	}
 
 	if *flagPublicKeys {
-		showPublicKeys(metadata, false)
+		showPublicKeys()
 	}
 
 	if *flagRamdiskId {
-		showRamdiskId(doc, false)
+		showRamdiskId()
 	}
 
 	if *flagReservationId {
-		showReservationId(metadata, false)
+		showReservationId()
 	}
 
 	if *flagSecurityGroups {
-		showSecurityGroups(metadata, false)
+		showSecurityGroups()
 	}
 
 	if *flagUserData {
-		showUserData(metadata, false)
+		showUserData()
 	}
 
   if *flagProfile {
-    showProfile(metadata, false)
+    showProfile()
   }
 
   if *flagMac {
-    showMac(metadata, false)
+    showMac()
   }
 
   if *flagInstanceAction {
-    showInstanceAction(metadata, false)
+    showInstanceAction()
   }
 
 	if *flagAll {
-		showAmiId(doc, true)
-		showAmiLaunchIndex(metadata, true)
-		showAmiManifestPath(metadata, true)
-		showAncestorAmiIds(metadata, true)
-		showAvailabilityZone(doc, true)
-		showBlockDeviceMapping(metadata, true)
-    showInstanceAction(metadata, true)
-		showInstanceId(doc, true)
-		showInstanceType(doc, true)
-		showLocalHostname(metadata, true)
-		showLocalIpv4(doc, true)
-		showKernelId(doc, true)
-    showMac(metadata, true)
-		showProductCodes(metadata, true)
-    showProfile(metadata, true)
-		showPublicHostname(metadata, true)
-		showPublicIpv4(metadata, true)
-		showPublicKeys(metadata, true)
-		showRamdiskId(doc, true)
-		showReservationId(metadata, true)
-		showSecurityGroups(metadata, true)
-		showUserData(metadata, true)
+    writeHeader = true
+		showAmiId()
+		showAmiLaunchIndex()
+		showAmiManifestPath()
+		showAncestorAmiIds()
+		showAvailabilityZone()
+		showBlockDeviceMapping()
+    showInstanceAction()
+		showInstanceId()
+		showInstanceType()
+		showLocalHostname()
+		showLocalIpv4()
+		showKernelId()
+    showMac()
+		showProductCodes()
+    showProfile()
+		showPublicHostname()
+		showPublicIpv4()
+		showPublicKeys()
+		showRamdiskId()
+		showReservationId()
+		showSecurityGroups()
+		showUserData()
 	}
 }
