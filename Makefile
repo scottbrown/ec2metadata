@@ -5,3 +5,5 @@ build:
 upload:
 	scp -i ~/Downloads/scott.pem .build/linux/ec2metadata ubuntu@ec2-52-91-185-200.compute-1.amazonaws.com:
 
+test:
+	go test ./...
