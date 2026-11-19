@@ -1,6 +1,6 @@
 module github.com/scottbrown/ec2metadata
 
-go 1.19
+go 1.27.4
 
 require (
 	github.com/aws/aws-sdk-go-v2 v2.0.0-preview.4+incompatible
@@ -12,7 +12,5 @@ require (
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/smartystreets/goconvey v1.7.2 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
-	gopkg.in/ini.v1 v1.67.0 // indirect
 )
